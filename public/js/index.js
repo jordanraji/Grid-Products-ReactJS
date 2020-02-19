@@ -9,8 +9,8 @@ class Item extends React.Component {
             <div className="col-md-3 col-6 my-3">
                 <div className="card card-body h-100">
                     <p className="text-center" style = {{ fontSize: this.props.product.size }}>{this.props.product.face}</p>
-                    <h5 className="text-center">${ this.priceHandler(this.props.product.price) }</h5>
-                    <p className="text-center"><small>{ this.dateHandler(this.props.product.date) }</small></p>
+                    <h5 className="text-center text-purple">${ this.priceHandler(this.props.product.price) }</h5>
+                    <p className="text-center text-secondary"><small>{ this.dateHandler(this.props.product.date) }</small></p>
                 </div>
             </div>
         );
@@ -38,13 +38,17 @@ class App extends React.Component {
         this.state = { 
             products: [],
             orderBy: "id",
+            page: 0,
+            prevY: 0,
+            loading: false,
         };
 
         this.getProducts = this.getProducts.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
-    getProducts(page=1, limit=20, sort='id') {
+    getProducts(page=0, limit=20, sort='id', addToProducts=false) {
+        this.setState({loading: true});
         axios({
             url: 'http://localhost:3000/products',
             method: 'get',
@@ -55,21 +59,59 @@ class App extends React.Component {
             }
         }).then(response => {
             console.log(response);
-            this.setState({
-                products: response.data
-            });
+
+            if(addToProducts){
+                this.setState({
+                    products: this.state.products.concat(response.data),
+                });
+            } else {
+                this.setState({
+                    products: response.data,
+                });
+            }
+            this.setState({ loading: false });
         })
     }
 
     handleChange(){
         this.setState({ orderBy: event.target.value });
-        this.getProducts(undefined, undefined, event.target.value);
+        this.getProducts(0, undefined, event.target.value, false);
+    }
+
+    handleObserver(entities, observer) {
+        const y = entities[0].boundingClientRect.y;
+        if (this.state.prevY > y) {
+            this.setState({ page: this.state.page + 1 });
+            this.getProducts(this.state.page + 1, undefined, this.state.orderBy , true);
+        }
+        this.setState({ prevY: y });
+    }
+
+    componentDidMount() {
+        this.getProducts();
+
+        var options = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 1.0
+        };
+
+        this.observer = new IntersectionObserver(
+            this.handleObserver.bind(this),
+            options
+        );
+
+        this.observer.observe(this.loadingRef);
     }
 
     render() {
+        const loadingCSS = {
+            height: "20px",
+            margin: "20px"
+        };
         return (
             <div>
-                <nav className="navbar fixed-top navbar-light bg-light">
+                <nav className="navbar fixed-top navbar-light bg-white">
                     <div className="container">
                         <span className="navbar-brand">faces</span>
                         <form className="form-inline">
@@ -85,18 +127,26 @@ class App extends React.Component {
                     </div>
                 </nav>
                 <div className="container">
-                    <div className="row">
-                        {this.state.products.map(function(product){
-                            return <Item key={product.id} product={product}></Item>
+                    <div className="row" style={{ minHeight: "800px" }}>
+                        {this.state.products.map(function (product, index) {
+                            return <Item key={index} product={product}></Item>
                         })}
                     </div>
+
+                    {this.state.loading? 
+                        <div className="text-center">
+                            <div className="spinner-border">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        : ""}
+
+                    <div ref={loadingRef => (this.loadingRef = loadingRef)} style={loadingCSS}>
+                    </div>
+
                 </div>
             </div>
         );
-    }
-
-    componentDidMount(){
-        this.getProducts();
     }
 }
 
