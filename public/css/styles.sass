@@ -1,16 +1,42 @@
 $bg-color: rgb(248, 249, 250)
-$main-color: rgb(125, 80, 223)
-    
+$main-color: rgb(255, 48, 123)
+$main-font: 'Knewave', cursive
+$secondary-font: 'Patua One', cursive
+
 body
     margin-top: 70px
     background-color: $bg-color
+
+h1, h2, h3, h4, h5, h6, p
+    margin: 0px
 
 .card
     border-radius: 0px
     border: 0px
 
-.text-purple
+.card-body
+    padding: 0.55rem
+    h5 
+        font-family: $secondary-font
+
+.text-red
     color: $main-color
 
-.bg-white
-    background-color: rgba(255, 255, 255, 0.95) !important
+.bg-black
+    background-color: rgba(0, 0, 0, 0.8) !important
+    .navbar-brand
+        color: $main-color
+        font-family: $main-font
+    .form-inline
+        span
+            color: $bg-color
+            font-size: 12px
+        select
+            min-width: 150px
+            color: $main-color
+            border-radius: 20px
+            font-size: 0.85rem
+            padding-left: 15%
+            border: 1px solid $main-color
+            &:focus
+                box-shadow: 0 0 0 .2rem rgba(255, 48, 123,.25)

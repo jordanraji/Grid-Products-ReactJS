@@ -8,9 +8,11 @@ class Item extends React.Component {
         return (
             <div className="col-md-3 col-6 my-3">
                 <div className="card card-body h-100">
-                    <p className="text-center" style = {{ fontSize: this.props.product.size }}>{this.props.product.face}</p>
-                    <h5 className="text-center text-purple">${ this.priceHandler(this.props.product.price) }</h5>
-                    <p className="text-center text-secondary"><small>{ this.dateHandler(this.props.product.date) }</small></p>
+                    <p className="text-center my-4" style = {{ fontSize: this.props.product.size }}>{this.props.product.face}</p>
+                    <div className="mt-auto">
+                        <h5 className="text-center text-red">${ this.priceHandler(this.props.product.price) }</h5>
+                        <p className="text-center text-secondary"><small>{ this.dateHandler(this.props.product.date) }</small></p>
+                    </div>
                 </div>
             </div>
         );
@@ -111,9 +113,9 @@ class App extends React.Component {
         };
         return (
             <div>
-                <nav className="navbar fixed-top navbar-light bg-white">
+                <nav className="navbar fixed-top bg-black">
                     <div className="container">
-                        <span className="navbar-brand">faces</span>
+                        <span className="navbar-brand">faceStore</span>
                         <form className="form-inline">
                             <label>
                                 <span className="mr-2">Order by:</span> 
@@ -127,7 +129,7 @@ class App extends React.Component {
                     </div>
                 </nav>
                 <div className="container">
-                    <div className="row" style={{ minHeight: "800px" }}>
+                    <div className="row" style={{ minHeight: "80px" }}>
                         {this.state.products.map(function (product, index) {
                             return <Item key={index} product={product}></Item>
                         })}

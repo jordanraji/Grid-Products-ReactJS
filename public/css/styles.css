@@ -3,17 +3,47 @@ body {
   background-color: #f8f9fa;
 }
 
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0px;
+}
+
 .card {
   border-radius: 0px;
   border: 0px;
 }
 
-.text-purple {
-  color: #7d50df;
+.card-body {
+  padding: 0.55rem;
+}
+.card-body h5 {
+  font-family: "Patua One", cursive;
 }
 
-.bg-white {
-  background-color: rgba(255, 255, 255, 0.95) !important;
+.text-red {
+  color: #ff307b;
+}
+
+.bg-black {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+.bg-black .navbar-brand {
+  color: #ff307b;
+  font-family: "Knewave", cursive;
+}
+.bg-black .form-inline span {
+  color: #f8f9fa;
+  font-size: 12px;
+}
+.bg-black .form-inline select {
+  min-width: 150px;
+  color: #ff307b;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  padding-left: 15%;
+  border: 1px solid #ff307b;
+}
+.bg-black .form-inline select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 48, 123, 0.25);
 }
 
 /*# sourceMappingURL=styles.css.map */
